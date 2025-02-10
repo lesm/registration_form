@@ -4,6 +4,7 @@ require 'debug'
 
 options = Selenium::WebDriver::Chrome::Options.new
 options.add_argument('--headless')
+options.add_argument('--window-size=1280,1024')
 options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
