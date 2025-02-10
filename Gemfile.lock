@@ -87,6 +87,7 @@ PLATFORMS
 
 DEPENDENCIES
   debug
+  selenium-webdriver
   telegram-bot-ruby
   watir
 

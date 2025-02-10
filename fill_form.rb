@@ -2,7 +2,13 @@ require 'telegram/bot'
 require 'watir'
 require 'debug'
 
-browser = Watir::Browser.new :chrome
+options = Selenium::WebDriver::Chrome::Options.new
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+browser = Watir::Browser.new(:chrome, options:)
 
 browser.goto ENV.fetch('FORM_URL', '')
 
@@ -30,7 +36,6 @@ browser.screenshot.save(after_submission_screenshot)
 browser.close
 
 ### Send screenshots by Telegram
-
 TELEGRAM_BOT_TOKEN = ENV.fetch('TELEGRAM_BOT_TOKEN', '')
 RECIPIENT_CHAT_ID = ENV.fetch('RECIPIENT_CHAT_ID', '')
 
