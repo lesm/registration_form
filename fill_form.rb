@@ -1,5 +1,6 @@
 require 'telegram/bot'
 require 'watir'
+require 'debug'
 
 browser = Watir::Browser.new :chrome
 
@@ -12,9 +13,10 @@ form = browser.form(id: ENV.fetch('FORM_ID', ''))
 form.text_field(index: 0).set(ENV.fetch('EMPLOYEE_NUMBER', ''))
 form.text_field(index: 1).set(ENV.fetch('EMPLOYEE_NAME', ''))
 
-date_and_time = Time.now.getlocal('-06:00').strftime('%Y-%m-%d-%H:%S')
-before_submission_screenshot = "before_submission_#{date_and_time}.png"
-after_submission_screenshot = "after_submission_#{date_and_time}.png"
+current_date = Time.now.getlocal('-06:00')
+parsed_date = current_date.strftime('%Y-%m-%d-%H:%S')
+before_submission_screenshot = "before_submission_#{parsed_date}.png"
+after_submission_screenshot = "after_submission_#{parsed_date}.png"
 
 # Take a screenshot before submission
 browser.screenshot.save(before_submission_screenshot)
@@ -32,7 +34,16 @@ browser.close
 TELEGRAM_BOT_TOKEN = ENV.fetch('TELEGRAM_BOT_TOKEN', '')
 RECIPIENT_CHAT_ID = ENV.fetch('RECIPIENT_CHAT_ID', '')
 
-EMOJIS = ['🥰', '😍', '😘', '😊', '❤️ ']
+EMOJIS = ['🥰', '😍', '😘', '😊', '❤️ '].freeze
+DAYS_IN_SPANISH = {
+  'Monday' => 'Lunes',
+  'Tuesday' => 'Martes',
+  'Wednesday' => 'Miércoles',
+  'Thursday' => 'Jueves',
+  'Friday' => 'Viernes',
+}.freeze
+
+day_of_week = DAYS_IN_SPANISH[current_date.strftime("%A")]
 
 # Initialize the bot
 Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN) do |bot|
@@ -54,7 +65,7 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN) do |bot|
 
   bot.api.send_message(
     chat_id: RECIPIENT_CHAT_ID,
-    text: 'Buenos días mi amor 🥰 🥰, te comparto las capturas de tu registro'
+    text: "Buenos días mi amor 🥰 🥰, te comparto las capturas de tu registro. \nQue tengas un bonito #{day_of_week} 😘"
   )
 
   # Send the media group
