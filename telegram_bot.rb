@@ -10,12 +10,26 @@ class TelegramBot
     'Wednesday' => 'Miércoles',
     'Thursday' => 'Jueves',
     'Friday' => 'Viernes',
+    'Saturday' => 'Sábado',
+    'Sunday' => 'Domingo'
   }.freeze
 
   def send_evidences(images_paths)
     Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN) do |bot|
       send_message(bot, RECIPIENT_CHAT_ID, header_message)
       send_media_group(bot, RECIPIENT_CHAT_ID, images_paths)
+      send_message(bot, RECIPIENT_CHAT_ID, footer_message)
+    rescue Telegram::Bot::Exceptions::ResponseError => e
+      puts "Error: #{e.message}"
+    end
+  end
+
+  def send_weekend_message
+    message = "Buenos días mi amor 🥰 🥰, hoy no hay registro.\n" \
+    "Que tengas un bonito #{day_of_week} 😘"
+
+    Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN) do |bot|
+      send_message(bot, RECIPIENT_CHAT_ID, message)
       send_message(bot, RECIPIENT_CHAT_ID, footer_message)
     rescue Telegram::Bot::Exceptions::ResponseError => e
       puts "Error: #{e.message}"
