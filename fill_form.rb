@@ -29,7 +29,10 @@ after_submission_screenshot = "after_submission_#{parsed_date}.png"
 browser.screenshot.save(before_submission_screenshot)
 
 # Submit the form
-# browser.button(type: 'submit').click
+# browser.span(text: 'Submit').click
+
+# Sleep for 2 seconds to wait for the form submission
+sleep(2)
 
 # Take a screenshot after submission
 browser.screenshot.save(after_submission_screenshot)
