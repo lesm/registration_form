@@ -21,7 +21,7 @@ class WebAutomation
 
     browser.screenshot.save(@before_submission_screenshot)
 
-    # browser.span(text: 'Submit').click
+    browser.span(text: 'Submit').click
 
     sleep(2)
 
