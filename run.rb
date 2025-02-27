@@ -3,7 +3,8 @@ require './telegram_bot'
 
 def fill_form
   web_automation.fill_form
-rescue Watir::Exception::UnknownObjectException, Watir::Wait::TimeoutError
+rescue Watir::Exception::Error, Watir::Wait::TimeoutError => e
+  puts e.inspect
   sleep(2)
   web_automation.fill_form
 end
